@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Comments Section</title>
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase-firestore.js"></script>
+    <style>
+
+body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        #commentsForm, #commentsList{
+            width: 45%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #commentsForm{
+            order: 1;
+        }
+        #commentsList{
+            order: 2;
+        }
+        input[type="text"], textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+
+
+    </style>
+</head>
+<body>
+   
+
+    <!-- Comments Form -->
+    <form id="commentsForm">
+
+        <h1>Comments Section</h1>
+        <label for="nameInput">Your Name:</label>
+        <input type="text" id="nameInput" required>
+        
+        <label for="commentInput">Your Comment:</label>
+        <textarea id="commentInput" required></textarea>
+
+        <label for="replyToInput">Reply To :</label>
+        <input type="text" id="replyToInput">
+
+        <button type="button" onclick="submitComment()">Submit Comment</button>
+    </form>
+
+    <!-- Display Comments -->
+    <div id="commentsList">
+        <h2>Comments</h2>
+        <ul id="comments-list">
+
+        </ul>
+    </div>
+
+    <script>
+        // Initialize Firebase with your project config
+        const firebaseConfig = {
+    apiKey: "AIzaSyBV9fP6jZiKCxvfoI6pwihJwFaMzbpDmd8",
+  authDomain: "eduhelp-forum-78e9f.firebaseapp.com",
+  databaseURL: "https://eduhelp-forum-78e9f-default-rtdb.firebaseio.com",
+  projectId: "eduhelp-forum-78e9f",
+  storageBucket: "eduhelp-forum-78e9f.appspot.com",
+  messagingSenderId: "970837350430",
+  appId: "1:970837350430:web:b7c1025cb3d711011e360f"
+
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+
+       
+        const db = firebase.firestore();
+
+       
+        function submitComment() {
+            const name = document.getElementById('nameInput').value;
+            const comment = document.getElementById('commentInput').value;
+            const replyTo = document.getElementById('replyToInput').value;
+
+            
+            if (name.trim() === '' || comment.trim() === '' || replyTo.trim() === '') {
+                alert('Fill in all three choices: Your Name, Your Comment, and Reply To');
+                return;
+            }
+
+            // Add the comment to Firestore
+            db.collection('comments').add({
+                name: name,
+                comment: comment,
+                replyTo: replyTo,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            document.getElementById('nameInput').value = '';
+            document.getElementById('commentInput').value = '';
+            document.getElementById('replyToInput').value = '';
+        }
+
+        
+        function displayComments() {
+            const commentsList = document.getElementById('commentsList');
+
+            
+            db.collection('comments').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+                commentsList.innerHTML = '';
+
+                commentsList.innerHTML += '<h2>Comments</h2>';
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    commentsList.innerHTML += `
+                        <p>
+                             <strong>${data.name}:</strong> ${data.comment} 
+                            ${data.replyTo ? '<em>(Reply to: ' + data.replyTo + ')</em>' : ''}
+                        </p>
+                    `;
+                });
+            });
+        }
+
+        
+        displayComments();
+    </script>
+</body>
+</html>

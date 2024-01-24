@@ -1,0 +1,99 @@
+/* POPPINS FONT */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+     justify-content: center; 
+    align-items: center;
+    height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: rgb(156, 213, 232);
+}
+
+.form {
+    width: 400px;
+    border-radius: 5px;
+    background-color: white;
+    /* height:fit-content;  */
+    padding: 5px 10px;
+}
+
+label {
+    display: block;
+    font-weight: bolder;
+    margin: 5px 0px;
+}
+
+input {
+    width: 100%;
+    padding: 8px 5px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+ #submit-btn {
+    border: none;
+    background-color: rgb(68, 206, 68);
+    width: 100%;
+    padding: 10px 8px;
+    color: white;
+    font-weight: bolder;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin: 9px 0px; 
+}
+
+p {
+    font-size: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+ a {
+    text-decoration: none;
+    font-weight: bolder;
+}
+.wrapper{
+    display: flex; 
+     justify-content: center; 
+    align-items: center;
+    min-height: 110vh;
+    background: rgb(156, 213, 232);
+} 
+.nav{
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    background: linear-gradient(rgb(156, 213, 232),transparent);
+    z-index: 100; 
+ } 
+  .nav-logo p{
+    color: white;
+    font-size: 25px;
+    font-weight: 600;
+    position: absolute;
+    left: 45px;
+   
+}
+
+
+ .img-edu{
+    width: 200px;
+    height: 200px;
+   position: relative;
+    top: 70px;
+    right: 120px;
+}  

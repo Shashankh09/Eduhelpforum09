@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> PDF Upload</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #007BFF;
+        }
+
+        input {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #pdfList {
+            margin-top: 20px;
+        }
+
+        embed {
+            margin-top: 10px;
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+</head>
+
+
+
+<body>
+    <h1>PDF Upload</h1>
+
+    <input type="file" id="pdfInput" accept=".pdf">
+    <button onclick="uploadPDF()">Upload PDF</button>
+
+    <div id="pdfList">
+      
+    </div>
+
+    <script>
+        // Initialize Firebase with your own config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBHOz1UEIwWKTsKzMTYRs1_F2lUaiaNovY",
+  authDomain: "english-bd9ff.firebaseapp.com",
+  projectId: "english-bd9ff",
+  storageBucket: "english-bd9ff.appspot.com",
+  messagingSenderId: "289812100428",
+  appId: "1:289812100428:web:4949f0d0445c2a3d320be9"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        
+        const storage = firebase.storage();
+
+        
+        function uploadPDF() {
+            const pdfInput = document.getElementById('pdfInput');
+
+           
+            if (pdfInput.files.length > 0) {
+                const file = pdfInput.files[0];
+                const storageRef = storage.ref('pdfs/' + file.name);
+
+                storageRef.put(file).then(snapshot => {
+                    console.log('PDF uploaded successfully');
+                    alert('PDF uploaded successfully');
+
+                   
+                    listPDFs();
+                }).catch(error => {
+                    console.error(error.message);
+                });
+            }
+        }
+
+        
+        function listPDFs() {
+            const pdfListDiv = document.getElementById('pdfList');
+            pdfListDiv.innerHTML = '';
+
+           
+            const storageRef = storage.ref('pdfs');
+
+            storageRef.listAll().then(result => {
+                result.items.forEach(itemRef => {
+                    itemRef.getDownloadURL().then(url => {
+                        const embed = document.createElement('embed');
+                        embed.src = url;
+                        embed.width = '600';
+                        embed.height = '400';
+
+                        pdfListDiv.appendChild(embed);
+                    });
+                });
+            }).catch(error => {
+                console.error(error.message);
+            });
+        }
+
+       
+        listPDFs();
+    </script>
+</body>
+</html>
